@@ -20,6 +20,6 @@ jobs:
           if [[ "$pre_release_date" != "$today" ]]; then
             pre_release_count=0
           fi
-          release_tag=$today-$(($pre_release_count + 1))
+          release_tag="${today}-$(($pre_release_count + 1))"
           echo $release_tag
           gh release create $release_tag --generate-notes --draft
