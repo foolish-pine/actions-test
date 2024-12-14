@@ -12,17 +12,10 @@ jobs:
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
       - name: Create Release
         run: |
-          pre_tag=$(gh release list --limit 1 --json tagName --jq '.[0].tagName')
-
-          today=$(date +'%Y.%m.%d')
-          pre_release_date=$(pre_tag | awk -F'-' '{print $1}')
-          pre_release_count=$(pre_tag | awk -F'-' '{print $2}')
-          
-          if [[ ! $pre_release_date = $today ]]; then
-            echo "init count"
+          pre_tag=$(gh api /repos/${{ github.repository }}/releases/latest --jq '.tag_name')
+          IFS='-' read -r pre_release_date pre_release_count <<< "$pre_tag"
+          if [[ "$pre_release_date" != "$today" ]]; then
             pre_release_count=0
           fi
-          
           release_tag="$today-$(($pre_release_count + 1))"
-
-          gh release create release_tag --generate-notes --draft
+          gh release create $release_tag --generate-notes --draft
