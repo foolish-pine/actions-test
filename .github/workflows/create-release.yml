@@ -17,6 +17,7 @@ jobs:
           IFS='-' read -r pre_release_date pre_release_count <<< "$pre_tag"
           echo "pre_release_date: $pre_release_date"
           echo "pre_release_count: $pre_release_count"
+          today=$(date +'%Y.%m.%d')
           if [[ "$pre_release_date" != "$today" ]]; then
             pre_release_count=0
           fi
