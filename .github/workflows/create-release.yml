@@ -15,8 +15,8 @@ jobs:
           pre_tag=$(gh release list --limit 1 --json tagName --jq '.[0].tagName')
 
           today=$(date +'%Y.%m.%d')
-          pre_release_date=$(pre_tag | awk -F'-' '{print $1}')
-          pre_release_count=$(pre_tag | awk -F'-' '{print $2}')
+          pre_release_date=$($pre_tag | awk -F'-' '{print $1}')
+          pre_release_count=$($pre_tag | awk -F'-' '{print $2}')
           
           if [[ ! $pre_release_date = $today ]]; then
             echo "init count"
@@ -25,4 +25,4 @@ jobs:
           
           release_tag="$today-$(($pre_release_count + 1))"
 
-          gh release create release_tag --generate-notes --draft
+          gh release create $release_tag --generate-notes --draft
